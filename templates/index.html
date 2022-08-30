@@ -1,0 +1,69 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Permission Manager</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+  <h1 class="title">Log into the permission manager</h1>
+
+    <h3 class="subtitle">Enter user cloud details</h3>
+    
+    <form action="/" method="post">
+      <input type="hidden" id="logging_in" name="logging_in" value="true"> 
+    <div class="field">
+      <p class="control has-icons-left has-icons-right">
+        <input  class="input {% if not check.endpoint_url.valid %} is-danger {% endif %}" type="text" placeholder="endpoint_url" name="endpoint_url">
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+        <span class="icon is-small is-right">
+          <i class="fas fa-check"></i>
+        </span>
+      </p>
+      {% if not check.endpoint_url.valid %}
+      <p class="help is-danger">{{ check.endpoint_url.error_message }}</p>
+      {% endif %}
+    </div>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input class="input {% if not check.ibm_api_key_id.valid %} is-danger {% endif %}" type="text" placeholder="ibm_api_key_id" name="ibm_api_key_id">
+        <span class="icon is-small is-left">
+          <i class="fas fa-lock"></i>
+        </span>
+      </p>
+      {% if not check.ibm_api_key_id.valid %}
+     
+      <p class="help is-danger">{{ check.ibm_api_key_id.error_message }}</p>
+      {% endif %}
+      
+    </div>
+
+    <div class="field">
+      <p class="control has-icons-left">
+        <input class="input {% if not check.ibm_service_instance_id.valid %} is-danger {% endif %}" type="text" placeholder="ibm_service_instance_id" name="ibm_service_instance_id">
+        <span class="icon is-small is-left">
+          <i class="fas fa-lock"></i>
+        </span>
+      </p>
+      {% if not check.ibm_service_instance_id.valid %}
+     
+      <p class="help is-danger">{{ check.ibm_service_instance_id.error_message }}</p>
+      {% endif %}
+      <div class="control"><br>
+        <p><input class="button is-primary" type="submit" value="Login"></p>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+</section>
+</body>
+</html>

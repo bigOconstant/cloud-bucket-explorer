@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+     
+      <h1 class="title">
+        Welcome to the permission manager
+      </h1>
+    
+      <a class="button" href="/dashboard">View Dashboard</a>
+      <form action="/" method="post">
+        <input type="hidden" id="ibm_api_key_id" name="ibm_api_key_id" value="">
+        <input type="hidden" id="ibm_service_instance_id" name="ibm_service_instance_id" value="">
+        <input type="hidden" id="endpoint_url" name="endpoint_url" value="">
+        <input type="hidden" id="logging_in" name="logging_in" value="false">
+          <button class="button material-symbols-outlined" title="logout" class="button" type="submit" value="Submit">Logout</button>
+      </form>
+
+    </div>
+  </section>
+  </body>
+</html>
