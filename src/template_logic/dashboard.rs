@@ -3,6 +3,8 @@ use actix_web::{
     
     web, Error, HttpResponse, Result
 };
+use std::collections::HashMap;
+
 use actix_session::{ Session};
 use crate::cos::cloud::{Cloud};
 
@@ -10,12 +12,18 @@ use crate::cos::cloud::{Cloud};
 pub async fn dashboard(
     tmpl: web::Data<tera::Tera>,
     session: Session,
+    query: web::Query<HashMap<String, String>>,
 ) -> Result<HttpResponse, Error> {
     
     if let Some(l) = session.get::<crate::view_models::login::Login>("session")? {
-
         let mut c:Cloud = Cloud::new(l);
-        c.getObjects().await;
+        let mut prefix:String;
+        if let Some(pref) = query.get("prefix") {
+            prefix = pref.clone();
+        }else {
+            prefix = "".to_string();
+        }
+        c.getObjects(prefix).await;
         let mut ctx = tera::Context::new();
         ctx.insert("items", &c.objectList.contents);
         let s = tmpl.render("dashboard.html", &ctx)

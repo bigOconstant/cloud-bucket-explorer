@@ -115,11 +115,11 @@ impl Cloud {
         Ok(())
     }
 
-    pub async fn getObjects(&mut self) -> Result<(), Error> {
+    pub async fn getObjects(&mut self, prefix: String) -> Result<(), Error> {
         self.getToken().await?;//Could check it this exist if not check if expired if not skip a call
         let client = reqwest::Client::new();
         let token_string = format!("{}{}", "bearer ".to_string(), self.token.access_token.clone());
-        let url = format!("{}/{}",self.credentials.endpoint_url,self.credentials.bucket);
+        let url = format!("{}/{}?prefix={}",self.credentials.endpoint_url,self.credentials.bucket,prefix);
         let response = client
             .get(url)
             .header("Authorization", token_string)
