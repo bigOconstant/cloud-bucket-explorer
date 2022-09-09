@@ -369,6 +369,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "bucket"
+version = "0.1.0"
+dependencies = [
+ "actix-session",
+ "actix-web",
+ "bytesize",
+ "cookie",
+ "env_logger",
+ "regex",
+ "reqwest",
+ "serde",
+ "serde-xml-rs",
+ "serde_derive",
+ "tera",
+]
+
+[[package]]
 name = "bumpalo"
 version = "3.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1221,23 +1238,6 @@ name = "percent-encoding"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4fd5641d01c8f18a23da7b6fe29298ff4b55afcccdf78973b24cf3175fee32e"
-
-[[package]]
-name = "permissions"
-version = "0.1.0"
-dependencies = [
- "actix-session",
- "actix-web",
- "bytesize",
- "cookie",
- "env_logger",
- "regex",
- "reqwest",
- "serde",
- "serde-xml-rs",
- "serde_derive",
- "tera",
-]
 
 [[package]]
 name = "pest"

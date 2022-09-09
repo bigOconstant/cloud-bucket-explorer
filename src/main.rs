@@ -27,7 +27,7 @@ async fn main() -> std::io::Result<()> {
                     .cookie_secure(false)
                     .build(),
             )
-            .configure(permissions::routes::routes) // enable logger
+            .configure(bucket::routes::routes) // enable logger
             .service(web::scope("").wrap(error_handlers()))
     })
     .bind(("0.0.0.0", 8080))?

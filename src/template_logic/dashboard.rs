@@ -12,11 +12,9 @@ pub async fn dashboard(
     session: Session,
 ) -> Result<HttpResponse, Error> {
     
-
     if let Some(l) = session.get::<crate::view_models::login::Login>("session")? {
 
         let mut c:Cloud = Cloud::new(l);
-        println!("initilizing values!");
         c.getObjects().await;
         let mut ctx = tera::Context::new();
         ctx.insert("items", &c.objectList.contents);
@@ -25,7 +23,6 @@ pub async fn dashboard(
     .map_err(|e| error::ErrorInternalServerError(e))?;
     return Ok(HttpResponse::Ok().content_type("text/html").body(s));
     }
-    println!("token not found!");
     let s = 
         tmpl.render("please_login.html",  &tera::Context::new())
             .map_err(|_| error::ErrorInternalServerError("Template error"))?;
