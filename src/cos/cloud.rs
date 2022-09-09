@@ -127,7 +127,16 @@ impl Cloud {
             .await?;
 
         let printing = response.text().await?;
-        self.objectList = from_str(printing.as_str()).unwrap();
+        let objects:Result<ListBucketResult,serde_xml_rs::Error> = from_str(printing.as_str());
+        //self.objectList = from_str(printing.as_str())?;
+        match objects {
+            Ok(obj) => {
+                self.objectList = obj;
+            },
+            Err(e) => {
+                println!("{}",e)
+            },
+        }
         
         for n in 0..self.objectList.contents.len() {
             self.objectList.contents[n].size_label =  ByteSize::b(self.objectList.contents[n].size.clone() as u64).to_string();

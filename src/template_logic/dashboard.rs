@@ -16,20 +16,32 @@ pub async fn dashboard(
 ) -> Result<HttpResponse, Error> {
     
     if let Some(l) = session.get::<crate::view_models::login::Login>("session")? {
-        let mut c:Cloud = Cloud::new(l);
+        let mut c:Cloud = Cloud::new(l.clone());
         let mut prefix:String;
         if let Some(pref) = query.get("prefix") {
             prefix = pref.clone();
         }else {
             prefix = "".to_string();
         }
-        c.getObjects(prefix).await;
-        let mut ctx = tera::Context::new();
-        ctx.insert("items", &c.objectList.contents);
-        let s = tmpl.render("dashboard.html", &ctx)
-
-    .map_err(|e| error::ErrorInternalServerError(e))?;
-    return Ok(HttpResponse::Ok().content_type("text/html").body(s));
+        let result = c.getObjects(prefix).await;
+        match result {
+            Ok(_) => {
+                let mut ctx = tera::Context::new();
+                ctx.insert("items", &c.objectList.contents);
+                let s = tmpl.render("dashboard.html", &ctx)
+                .map_err(|e| error::ErrorInternalServerError(e))?;
+                return Ok(HttpResponse::Ok().content_type("text/html").body(s));
+            }
+            Err(_) => {
+                c = Cloud::new(l);
+                let mut ctx = tera::Context::new();
+                ctx.insert("items", &c.objectList.contents);
+                let s = tmpl.render("dashboard.html", &ctx)
+                .map_err(|e| error::ErrorInternalServerError(e))?;
+                return Ok(HttpResponse::Ok().content_type("text/html").body(s));
+            },
+        }
+        
     }
     let s = 
         tmpl.render("please_login.html",  &tera::Context::new())
