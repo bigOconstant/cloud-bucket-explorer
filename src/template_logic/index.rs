@@ -59,6 +59,7 @@ pub async fn save_token(session: Session,params: web::Form<crate::view_models::l
         l.endpoint_url = params.endpoint_url.clone();
         l.ibm_api_key_id  = params.ibm_api_key_id.clone();
         l.ibm_service_instance_id = params.ibm_service_instance_id.clone();
+        l.bucket = params.bucket.clone();
         session.insert("session", l)?;
         let s = tmpl.render("home.html", &ctx)
     .map_err(|_| error::ErrorInternalServerError("Template error"))?;

@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use regex::Regex;
 
 
 #[derive(Serialize, Deserialize,)]
@@ -8,24 +7,27 @@ pub struct FieldError{
     pub error_message:String,
 }
 
-#[derive(Serialize, Deserialize,)]
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+
 pub struct Login {
     pub ibm_api_key_id: String,
     pub ibm_service_instance_id: String,
     pub endpoint_url: String,
     pub logging_in: bool,
+    pub bucket: String,
 }
 
 #[derive(Serialize, Deserialize,)]
 pub struct LoginCheck{
     pub ibm_api_key_id:FieldError,
+    pub bucket:FieldError,
     pub ibm_service_instance_id:FieldError,
     pub endpoint_url:FieldError,
 }
 
 impl LoginCheck {
     pub fn new()->LoginCheck {
-        return LoginCheck { ibm_api_key_id: FieldError{valid:true,error_message:"".to_string()}, ibm_service_instance_id: FieldError{valid:true,error_message:"".to_string()},endpoint_url: FieldError{valid:true,error_message:"".to_string()} };
+        return LoginCheck {bucket:FieldError{valid:true,error_message:"".to_string()}, ibm_api_key_id: FieldError{valid:true,error_message:"".to_string()}, ibm_service_instance_id: FieldError{valid:true,error_message:"".to_string()},endpoint_url: FieldError{valid:true,error_message:"".to_string()} };
     }  
 
     pub fn has_error(&self)->bool {
@@ -54,7 +56,7 @@ impl LoginCheck {
 
 impl Login {
     pub fn new()->Login {
-        return Login { ibm_api_key_id: "".to_string(), ibm_service_instance_id: "".to_string(),endpoint_url: "".to_string(),logging_in:true};
+        return Login { bucket:"".to_string(), ibm_api_key_id: "".to_string(), ibm_service_instance_id: "".to_string(),endpoint_url: "".to_string(),logging_in:true};
     }
 
  

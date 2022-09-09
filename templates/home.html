@@ -9,21 +9,49 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   </head>
   <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+          <a class="button is-ghost navbar-item" href="/">
+              Home
+            </a>
+            
+      </div>
+      
+      <div id="navbarBasicExample" class="navbar-end">
+
+          
+            <form action="/" method="post">
+              <input type="hidden" id="ibm_api_key_id" name="ibm_api_key_id" value="">
+              <input type="hidden" id="ibm_service_instance_id" name="ibm_service_instance_id" value="">
+              <input type="hidden" id="endpoint_url" name="endpoint_url" value="">
+              <input type="hidden" id="bucket" name="bucket" value="">
+              <input type="hidden" id="logging_in" name="logging_in" value="false">
+                <button class="button is-ghost navbar-item" title="logout" type="submit" value="Submit">Logout</button>
+            </form>
+ 
+        <div class="navbar-end">
+         
+        </div>
+      </div>
+    </nav>
   <section class="section">
+    
     <div class="container">
      
       <h1 class="title">
-        Welcome to the permission manager
+        Welcome to the bucket manager
       </h1>
+
+      <div class="columns">
+        <div class="column">
+          <a class="button " href="/dashboard">View Dashboard</a>
+        </div>
+        
+        
+      </div>
     
-      <a class="button" href="/dashboard">View Dashboard</a>
-      <form action="/" method="post">
-        <input type="hidden" id="ibm_api_key_id" name="ibm_api_key_id" value="">
-        <input type="hidden" id="ibm_service_instance_id" name="ibm_service_instance_id" value="">
-        <input type="hidden" id="endpoint_url" name="endpoint_url" value="">
-        <input type="hidden" id="logging_in" name="logging_in" value="false">
-          <button class="button material-symbols-outlined" title="logout" class="button" type="submit" value="Submit">Logout</button>
-      </form>
+      
+      
 
     </div>
   </section>
