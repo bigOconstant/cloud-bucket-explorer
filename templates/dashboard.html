@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   </head>
   <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
           <a class="navbar-item is-link" href="/">
               Home
@@ -44,8 +44,8 @@
          <strong>Object List</strong>
       </p>
       <form action="/dashboard" method="get">
-      <div class="field has-addons">
-        <div class="control">
+      <div class="field has-addons is-fullwidth">
+        <div class="control is-fullwidth" style="width:100%">
           <input class="input" type="text" name="prefix"  placeholder="Search by item prefix">
         </div>
         <div class="control">
@@ -54,7 +54,7 @@
         </div>
       </div>
     </form>
-      <table class="table">
+      <table class="table is-fullwidth" style>
         <thead>
           <tr>
             <th><abbr title="Name">Name</abbr></th>
