@@ -6,6 +6,8 @@ use std::collections::HashMap;
 use serde_xml_rs::{from_str, to_string, de::Deserializer};
 extern crate bytesize;
 use bytesize::ByteSize;
+use urlencoding::encode;
+
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -43,6 +45,15 @@ pub struct Content {
     pub owner: Owner,
     #[serde(rename = "StorageClass")]
     pub storage_class: String,
+    #[serde(skip_deserializing)]
+    pub url:String,
+}
+
+impl Content {
+    fn set_url(&mut self) {
+        let val :String = format!("/details?key={}&last_modified={}&size_label={}&owner={}",encode(&self.key),encode(&self.last_modified),encode(&self.size_label),encode(&self.owner.display_name));
+        self.url = val;
+    }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -87,6 +98,11 @@ impl Cloud {
             ..Default::default()
         };
         return c;
+    }
+    pub fn set_urls(&mut self) {
+        for n in 0..self.objectList.contents.len() {
+            self.objectList.contents[n].set_url();
+        }
     }
     async fn getToken(&mut self) -> Result<(), Error> {
         let client = reqwest::Client::new();

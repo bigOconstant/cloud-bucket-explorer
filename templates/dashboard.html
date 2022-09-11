@@ -67,7 +67,7 @@
           {% for item in items %}
           <tr>
             <!-- serde renames the objects so take a look at the value above the names in the struct-->
-            <td>{{item.Key}} </td>
+            <td><a href="{{ item.url}} ">{{item.Key}}</a> </td>
               <td>{{item.sizeLabel}}</td>
               <td>{{item.LastModified}}</td>
           </tr>

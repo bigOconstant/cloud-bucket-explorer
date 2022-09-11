@@ -17,3 +17,4 @@ serde_derive = "1.0.144"
 serde-xml-rs = "0.6.0"
 reqwest = { version = "0.11", features = ["json"] }
 bytesize = {version = "1.1.0", features = ["serde"]}
+urlencoding = "2.1.2"
