@@ -28,7 +28,7 @@ pub struct ListBucketResult {
     pub contents: Vec<Content>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, PartialOrd)]
 #[serde(rename_all = "camelCase")]
 pub struct Content {
     #[serde(rename = "Key")]
@@ -56,7 +56,7 @@ impl Content {
     }
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, PartialOrd)]
 #[serde(rename_all = "camelCase")]
 pub struct Owner {
     #[serde(rename = "ID")]
@@ -144,9 +144,11 @@ impl Cloud {
 
         let printing = response.text().await?;
         let objects:Result<ListBucketResult,serde_xml_rs::Error> = from_str(printing.as_str());
-        //self.objectList = from_str(printing.as_str())?;
+        
         match objects {
-            Ok(obj) => {
+            Ok(mut obj) => {
+                //Sort by newest first
+                obj.contents.sort_by(|a,b| b.last_modified.cmp(&a.last_modified));
                 self.objectList = obj;
             },
             Err(e) => {
