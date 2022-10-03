@@ -30,11 +30,13 @@ pub async fn dashboard(
                 let mut ctx = tera::Context::new();
                 c.set_urls();
                 ctx.insert("items", &c.objectList.contents);
+                ctx.insert("size",&c.get_total_size());
                 let s = tmpl.render("dashboard.html", &ctx)
                 .map_err(|e| error::ErrorInternalServerError(e))?;
                 return Ok(HttpResponse::Ok().content_type("text/html").body(s));
             }
-            Err(_) => {
+            Err(e) => {
+                print!("error getting results:{}",e);
                 c = Cloud::new(l);
                 let mut ctx = tera::Context::new();
                 ctx.insert("items", &c.objectList.contents);
@@ -52,25 +54,7 @@ pub async fn dashboard(
     Ok(HttpResponse::Ok().content_type("text/html").body(s))
 }
 
-/*
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Content {
-    #[serde(rename = "Key")]
-    pub key: String,
-    #[serde(rename = "LastModified")]
-    pub last_modified: String,
-    #[serde(rename = "ETag")]
-    pub etag: String,
-    #[serde(rename = "Size")]
-    pub size: i64,
-    #[serde(default)]
-    pub size_label:String,
-    #[serde(rename = "Owner")]
-    pub owner: Owner,
-    #[serde(rename = "StorageClass")]
-    pub storage_class: String,
-}*/
+
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ObjectDetails {

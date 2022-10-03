@@ -74,13 +74,13 @@ pub struct Token {
     #[serde(rename = "refresh_token")]
     pub refresh_token: String,
     #[serde(rename = "ims_user_id")]
-    pub ims_user_id: i64,
+    pub ims_user_id: Option<i64>,
     #[serde(rename = "token_type")]
-    pub token_type: String,
+    pub token_type: Option<String>,
     #[serde(rename = "expires_in")]
-    pub expires_in: i64,
-    pub expiration: i64,
-    pub scope: String,
+    pub expires_in: Option<i64>,
+    pub expiration: Option<i64>,
+    pub scope: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -125,10 +125,22 @@ impl Cloud {
             .send()
             .await?;
 
+        //println!("response{}",&response.text().await?);
+
          self.token = response.json().await?;
+         println!("token:{}",&self.token.access_token);
         
          
         Ok(())
+    }
+
+    pub fn get_total_size(&self)-> String{
+        let mut ret_val:i64 = 0;
+
+        for n in 0..self.objectList.contents.len() {
+            ret_val = ret_val + self.objectList.contents[n].size;
+        }
+        return ByteSize::b(ret_val as u64).to_string();
     }
 
     pub async fn getObjects(&mut self, prefix: String) -> Result<(), Error> {
@@ -143,6 +155,8 @@ impl Cloud {
             .await?;
 
         let printing = response.text().await?;
+
+        println!("printing:{}",printing);
         let objects:Result<ListBucketResult,serde_xml_rs::Error> = from_str(printing.as_str());
         
         match objects {
