@@ -25,8 +25,18 @@ pub async fn dashboard(
         }else {
             prefix = "".to_string();
         }
-        if let Some(index) = query.get("index") {
+        if let Some(index_inside) = query.get("index") {
             println!("index found");
+            let temp_value = index_inside.parse::<i32>();
+            match temp_value{
+                Ok(x) => {
+                    index = x;
+                },
+                Err(e) => {
+                    println!("Error on index value");
+                },
+            }
+            
         }else {
             index = 0;
         }

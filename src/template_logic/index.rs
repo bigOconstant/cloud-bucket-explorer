@@ -36,7 +36,7 @@ pub async fn index(
     Ok(HttpResponse::Ok().content_type("text/html").body(s))
 }
 
-pub async fn save_token(session: Session,
+pub async fn save_bucket(session: Session,
     params: web::Form<crate::view_models::login::Login>,
     tmpl: web::Data<tera::Tera>) -> Result<HttpResponse,Error> {
 
@@ -67,18 +67,32 @@ pub async fn save_token(session: Session,
 
         let mut l = crate::view_models::login::Login::new();
         l.endpoint_url = params.endpoint_url.clone();
-        println!("endpointurl:{}",l.endpoint_url);
         l.ibm_api_key_id  = params.ibm_api_key_id.clone();
         l.ibm_service_instance_id = params.ibm_service_instance_id.clone();
         l.bucket = params.bucket.clone();
         la.buckets.append(&mut vec![l.clone()]);
         session.insert("session", la.clone())?;
-        ctx.insert("cookie", &l);
+        ctx.insert("objects", &la);
         let s = tmpl.render("home.html", &ctx)
     .map_err(|_| error::ErrorInternalServerError("Template error"))?;
     return Ok(HttpResponse::Ok().content_type("text/html").body(s))
     }
         
+}
+
+pub async fn add_bucket(
+    tmpl: web::Data<tera::Tera>,
+    session: Session,
+) -> Result<HttpResponse, Error> {
+    let check = crate::view_models::login::LoginCheck::new();
+    let mut ctx = tera::Context::new();
+    ctx.insert("check", &check);
+    
+    let s = 
+        tmpl.render("index.html",  &ctx)
+            .map_err(|_| error::ErrorInternalServerError("Template error"))?;
+    
+    Ok(HttpResponse::Ok().content_type("text/html").body(s))
 }
 
 

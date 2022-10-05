@@ -26,7 +26,7 @@
               <input type="hidden" id="endpoint_url" name="endpoint_url" value="">
               <input type="hidden" id="bucket" name="bucket" value="">
               <input type="hidden" id="logging_in" name="logging_in" value="false">
-                <button class="button is-ghost navbar-item" title="logout" type="submit" value="Submit">Logout</button>
+                <button class="button is-ghost navbar-item" title="logout" type="submit" value="Submit">Clear Buckets</button>
             </form>
  
         <div class="navbar-end">
@@ -44,29 +44,33 @@
 
       <div class="columns">
         <div class="column">
-          <a class="button " href="/dashboard">View Dashboard</a>
+          <a class="button " href="/addbucket">Add Bucket</a>
         </div>
+        {# <div class="column">
+          <a class="button " href="/addbucket">Add Bucket</a>
+        </div> #}
         
       </div>
 
       {% for bucket in objects.buckets %}
        
-      
+      {% set my_index = loop.index -1 %}
 
       <article class="message">
         <div class="message-header">
-          <p>Credentials</p>
+          <p>{{ bucket.bucket }} Credentials</p>
           
         </div>
         
         <div class="message-body">
-          You are now logged in. <br> 
           Your bucket is <strong>{{ bucket.bucket }}</strong><br> 
           ibm_api_key_id is <strong>{{ bucket.ibm_api_key_id }}</strong><br> 
           endpoint_url is <strong>{{ bucket.endpoint_url }}</strong><br>
           ibm_service_instance_id is <strong>{{ bucket.ibm_service_instance_id }}</strong>
-
-
+          <br>
+          
+          <a class="button " href="/dashboard?index={{ my_index }}">View Dashboard</a>
+        
         </div>
       </article>
      {% endfor %}
