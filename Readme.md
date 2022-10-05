@@ -8,6 +8,7 @@ Zero Javascript.
 
 Written in Pure Rust.
 
-![alt text](https://files.catbox.moe/odhihv.png)
+![bucket list](https://files.catbox.moe/kjl7wg.png)
 
-![alt text](https://files.catbox.moe/kjl7wg.png)
+![dashboard page](https://files.catbox.moe/odhihv.png)
+
