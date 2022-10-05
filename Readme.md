@@ -2,8 +2,6 @@
 
 Explore Cos objects/backups with api Keys and without the need to login to ibm cloud.
 
-Explore your backups on ibm cloud without having to login to ibm cloud.
-
 Zero Javascript.
 
 Buckets Credentials are stored in a cookie in your browser. You can conveniently browse them in a scrollable page.
