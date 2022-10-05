@@ -48,6 +48,11 @@
         </div>
         
       </div>
+
+      {% for bucket in objects.buckets %}
+       
+      
+
       <article class="message">
         <div class="message-header">
           <p>Credentials</p>
@@ -56,15 +61,15 @@
         
         <div class="message-body">
           You are now logged in. <br> 
-          Your bucket is <strong>{{ cookie.bucket }}</strong><br> 
-          ibm_api_key_id is <strong>{{ cookie.ibm_api_key_id }}</strong><br> 
-          endpoint_url is <strong>{{ cookie.endpoint_url }}</strong><br>
-          ibm_service_instance_id is <strong>{{ cookie.ibm_service_instance_id }}</strong>
+          Your bucket is <strong>{{ bucket.bucket }}</strong><br> 
+          ibm_api_key_id is <strong>{{ bucket.ibm_api_key_id }}</strong><br> 
+          endpoint_url is <strong>{{ bucket.endpoint_url }}</strong><br>
+          ibm_service_instance_id is <strong>{{ bucket.ibm_service_instance_id }}</strong>
 
 
         </div>
       </article>
-
+     {% endfor %}
     </div>
   </section>
   </body>

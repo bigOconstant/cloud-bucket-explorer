@@ -5,7 +5,7 @@ use actix_web::{
     web, Error, HttpResponse, Result
 };
 use actix_session::{ Session};
-
+use crate::view_models::login::LoginArray;
 //use crate::view_models::login::Login;
 
 pub async fn index(
@@ -16,15 +16,19 @@ pub async fn index(
     let mut ctx = tera::Context::new();
     ctx.insert("check", &check);
     
+    println!("In index!");
+    if let Some(l) = session.get::<LoginArray>("session")? {
+        //let login_array:LoginArray = LoginArray{buckets:vec![l]};
+        println!("Found login array inserting objects");
 
-    if let Some(l) = session.get::<crate::view_models::login::Login>("session")? {
-        ctx.insert("cookie", &l);
+        ctx.insert("objects", &l);
 
         let s = tmpl.render("home.html", &ctx)
     .map_err(|_| error::ErrorInternalServerError("Template error"))?;
     return Ok(HttpResponse::Ok().content_type("text/html").body(s));
     }
-    println!("token not found!");
+    println!("end index!");
+    
     let s = 
         tmpl.render("index.html",  &ctx)
             .map_err(|_| error::ErrorInternalServerError("Template error"))?;
@@ -32,7 +36,14 @@ pub async fn index(
     Ok(HttpResponse::Ok().content_type("text/html").body(s))
 }
 
-pub async fn save_token(session: Session,params: web::Form<crate::view_models::login::Login>,tmpl: web::Data<tera::Tera>) -> Result<HttpResponse,Error> {
+pub async fn save_token(session: Session,
+    params: web::Form<crate::view_models::login::Login>,
+    tmpl: web::Data<tera::Tera>) -> Result<HttpResponse,Error> {
+
+    let mut la:LoginArray = LoginArray{buckets:vec![]};
+    if let Some(l) = session.get::<LoginArray>("session")? {
+        la = l;
+    }
     
     let mut ctx = tera::Context::new();
     
@@ -56,10 +67,12 @@ pub async fn save_token(session: Session,params: web::Form<crate::view_models::l
 
         let mut l = crate::view_models::login::Login::new();
         l.endpoint_url = params.endpoint_url.clone();
+        println!("endpointurl:{}",l.endpoint_url);
         l.ibm_api_key_id  = params.ibm_api_key_id.clone();
         l.ibm_service_instance_id = params.ibm_service_instance_id.clone();
         l.bucket = params.bucket.clone();
-        session.insert("session", l.clone())?;
+        la.buckets.append(&mut vec![l.clone()]);
+        session.insert("session", la.clone())?;
         ctx.insert("cookie", &l);
         let s = tmpl.render("home.html", &ctx)
     .map_err(|_| error::ErrorInternalServerError("Template error"))?;

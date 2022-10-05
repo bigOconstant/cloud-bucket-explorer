@@ -39,9 +39,11 @@
         Dashboard
       </h1>
       
-     
       <p class="subtitle">
-         <strong>Object List</strong>
+         <strong>Object List</strong> 
+         <span class="tag">
+          Total size:&nbsp;{{ size }}
+        </span>
       </p>
       <form action="/dashboard" method="get">
       <div class="field has-addons is-fullwidth">
@@ -69,13 +71,15 @@
             <!-- serde renames the objects so take a look at the value above the names in the struct-->
             <td><a href="{{ item.url}} ">{{item.Key}}</a> </td>
               <td>{{item.sizeLabel}}</td>
-              <td>{{item.LastModified}}</td>
+              <td>{{item.LastModified}} <a href="{{ item.deleteurl}} " title="delete" class="delete"></a></td>
           </tr>
         {% endfor %}
           
           </tbody>
       </table>
     </div>
+
+    
   </section>
   </body>
 </html>

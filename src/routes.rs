@@ -1,7 +1,7 @@
 use actix_web::{web};
 
 use crate::template_logic::index::{index,save_token};
-use crate::template_logic::dashboard::{dashboard,details};
+use crate::template_logic::dashboard::{dashboard,details,details_delete};
 
 
 pub fn routes(cfg: &mut web::ServiceConfig) {

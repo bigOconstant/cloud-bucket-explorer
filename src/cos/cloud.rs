@@ -47,12 +47,16 @@ pub struct Content {
     pub storage_class: String,
     #[serde(skip_deserializing)]
     pub url:String,
+    #[serde(skip_deserializing)]
+    pub deleteurl:String,
 }
 
 impl Content {
     fn set_url(&mut self) {
-        let val :String = format!("/details?key={}&last_modified={}&size_label={}&owner={}",encode(&self.key),encode(&self.last_modified),encode(&self.size_label),encode(&self.owner.display_name));
+        let mut val :String = format!("/details?key={}&last_modified={}&size_label={}&owner={}&delete=false",encode(&self.key),encode(&self.last_modified),encode(&self.size_label),encode(&self.owner.display_name));
         self.url = val;
+        val  = format!("/details?key={}&last_modified={}&size_label={}&owner={}&delete=true",encode(&self.key),encode(&self.last_modified),encode(&self.size_label),encode(&self.owner.display_name));
+        self.deleteurl = val;
     }
 }
 
@@ -128,7 +132,7 @@ impl Cloud {
         //println!("response{}",&response.text().await?);
 
          self.token = response.json().await?;
-         println!("token:{}",&self.token.access_token);
+         //println!("token:{}",&self.token.access_token);
         
          
         Ok(())
@@ -143,11 +147,33 @@ impl Cloud {
         return ByteSize::b(ret_val as u64).to_string();
     }
 
+    pub async fn delete_objects(&mut self,objects:Vec<String>) -> Result<(), Error> {
+        self.getToken().await?;//Could check it this exist if not check if expired if not skip a call
+        for name in objects.iter() {
+            let client = reqwest::Client::new();
+            let token_string = format!("{}{}", "bearer ".to_string(), self.token.access_token.clone());
+            
+            let url = format!("{}/{}/{}",self.credentials.endpoint_url,self.credentials.bucket,name);
+            let response = client
+            .delete(url)
+            .header("Authorization", token_string)
+            .send()
+            .await?;
+
+            print!("response here:{}",response.status());
+            println!("response code for delete:{}",response.status())
+        }
+        Ok(())
+    }
+
     pub async fn getObjects(&mut self, prefix: String) -> Result<(), Error> {
         self.getToken().await?;//Could check it this exist if not check if expired if not skip a call
         let client = reqwest::Client::new();
         let token_string = format!("{}{}", "bearer ".to_string(), self.token.access_token.clone());
+        println!("self.credentials.endpoint_url:{}",self.credentials.endpoint_url);
         let url = format!("{}/{}?prefix={}",self.credentials.endpoint_url,self.credentials.bucket,prefix);
+        println!("url here!:{}",url);
+        println!("end");
         let response = client
             .get(url)
             .header("Authorization", token_string)
@@ -156,7 +182,7 @@ impl Cloud {
 
         let printing = response.text().await?;
 
-        println!("printing:{}",printing);
+        //println!("printing:{}",printing);
         let objects:Result<ListBucketResult,serde_xml_rs::Error> = from_str(printing.as_str());
         
         match objects {
@@ -166,7 +192,7 @@ impl Cloud {
                 self.objectList = obj;
             },
             Err(e) => {
-                println!("{}",e)
+                println!("error:{}",e)
             },
         }
         

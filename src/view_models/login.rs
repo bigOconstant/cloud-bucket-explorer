@@ -17,6 +17,12 @@ pub struct Login {
     pub bucket: String,
 }
 
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+
+pub struct LoginArray {
+    pub buckets: Vec<Login>,
+}
+
 #[derive(Serialize, Deserialize,)]
 pub struct LoginCheck{
     pub ibm_api_key_id:FieldError,
