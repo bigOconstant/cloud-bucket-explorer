@@ -192,7 +192,8 @@ impl Cloud {
                 self.objectList = obj;
             },
             Err(e) => {
-                println!("error:{}",e)
+                println!("error:{}",e);
+                println!("{}",printing.as_str());
             },
         }
         
